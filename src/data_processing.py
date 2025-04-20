@@ -25,3 +25,19 @@ def prepare_sequences(scaled_data, time_step=100):
         x.append(scaled_data[i-time_step:i])
         y.append(scaled_data[i, 0])
     return np.array(x), np.array(y)
+
+def prepare_test_data(data_train, data_test, scaler, time_step=100):
+    # Prepare the last 100 days from training set
+    last_100_days = data_train.tail(time_step)
+    # Concatenate them with the test set
+    data_test = pd.concat([last_100_days, data_test], ignore_index=True)
+    # Scale the data
+    data_test_scaled = scaler.fit_transform(data_test)
+    
+    x, y = [], []
+    for i in range(time_step, data_test_scaled.shape[0]):
+        x.append(data_test_scaled[i-time_step:i])
+        y.append(data_test_scaled[i, 0])
+    
+    return np.array(x), np.array(y), data_test_scaled
+

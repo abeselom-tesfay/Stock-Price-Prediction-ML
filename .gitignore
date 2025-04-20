@@ -16,3 +16,5 @@ ENV/
 # Ignore virtual environment directories
 .virtual_documents/
 anaconda_projects/
+
+models/
